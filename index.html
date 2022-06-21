@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <title>Bubble Sort Visualizer</title>
+    <style>
+    #app {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        color: #000000;
+        margin-top: 60px;
+    }
+    .flex-container {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .container {
+        border: solid 2px black;
+        margin: 20px;
+    }
+    .bar {
+        width: 20px;
+        background-color: black;
+        display: inline-block;
+        margin: 0 5px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Sorting Algorithm Visualizer</h1>
+        <button @click="sort()">Bubble Sort</button>
+        <button @click="shuffle()">Shuffle</button>
+        
+        <div class="flex-container">
+            <sortui :size="30" :sortwatch="sortTrigger" :shufflewatch="shuffleTrigger" />
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
+
