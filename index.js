@@ -49,21 +49,44 @@ const app = Vue.createApp({
         return {
             sortTrigger: 0,
             shuffleTrigger: 0,
+            isSorting: false,
         };
     },
     methods: {
         sort() {
+            if (this.isSorting) {
+                alert("Sort is in progress");
+                return;
+            }
             this.sortTrigger++;
         },
         shuffle() {
+            if (this.isSorting) {
+                alert("Sort is in progress");
+                return;
+            }
             this.shuffleTrigger++;
+        },
+        sortToggleState() {
+            this.isSorting = !this.isSorting;
         },
     }
 });
 
 // Sort process display component
 app.component('sortui', {
-    props: { size: Number, sortwatch: Number, shufflewatch: Number },
+    props: { 
+        // Number of elements in sorting display
+        elemcount: { type: Number, required: true }, 
+        // Max element height/value
+        maxelemsize: { type: Number, required: true },
+        // Min element height/value
+        minelemsize: { type: Number, required: true },
+        // Sort watch variable
+        sortwatch: Number, 
+        // Shuffle watch variable
+        shufflewatch: Number 
+    },
     watch: { 
         sortwatch: function(nv, ov) {
             this.sort();
@@ -76,48 +99,42 @@ app.component('sortui', {
         return {
             array: [],
             sorter: new BubbleSort(),
-            isSorting: false,
         };
     },
     created() {
         this.fillArray();
     },
     methods: {
+        // Refill array with random values
         fillArray() {
-            // Quit if sorting is in progress
-            if (this.isSorting) {
-                alert("Sort is in progress");
-                return;
-            }
             this.array = [];
-            for (let i = 0; i < this.size; i++) {
-               this.array.push(this.getRndInteger(5, 150));
+            for (let i = 0; i < this.elemcount; i++) {
+               this.array.push(this.getRndInteger(this.minelemsize, this.maxelemsize));
             }
         },
+        // Generate random fixed integer in given range
         getRndInteger(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
+        // Provides different colors for pair of sorted elements 
         getColor(number) {
-            // Provide different colors for previously sorted elements
             if (this.sorter.getFirstElement() == number)
                 return '#FF0000';
             if (this.sorter.getSecondElement() == number)
                 return '#0000FF';
             return '#000000';
         },
+        // Automatic continous sort
         async sort() {
-            // Quit if sorting is in progress
-            if (this.isSorting) {
-                alert("Sort already in progress");
-                return;
-            }
-            this.isSorting = true;
+            // Disable buttons
+            this.$emit("sorttoggle");
             while (!this.sorter.isSorted(this.array)) {
                 // Make a sorting step, and wait a bit
                 this.sorter.sortStep(this.array);
                 await this.sleep();
             }
-            this.isSorting = false;
+            // Enable buttons
+            this.$emit("sortToggleState");
         },
         sleep() {
             return new Promise((resolve) => setTimeout(resolve, 50));

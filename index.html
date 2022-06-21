@@ -10,7 +10,7 @@
         font-family: Arial, sans-serif;
         text-align: center;
         color: #000000;
-        margin-top: 60px;
+        margin-top: 30px;
     }
     .flex-container {
         padding: 0;
@@ -30,17 +30,20 @@
         display: inline-block;
         margin: 0 5px;
     }
+    .button {
+        margin: 5px;
+    }
     </style>
 </head>
 
 <body>
     <div id="app">
         <h1>Sorting Algorithm Visualizer</h1>
-        <button @click="sort()">Bubble Sort</button>
-        <button @click="shuffle()">Shuffle</button>
+        <button class="button" @click="sort()">Bubble Sort</button>
+        <button class="button" @click="shuffle()">Shuffle</button>
         
         <div class="flex-container">
-            <sortui :size="30" :sortwatch="sortTrigger" :shufflewatch="shuffleTrigger" />
+            <sortui :minelemsize="5" :maxelemsize="150" :elemcount="30" :sortwatch="sortTrigger" :shufflewatch="shuffleTrigger" @sorttoggle="sortToggleState" />
         </div>
     </div>
     <script src="index.js"></script>
