@@ -58,6 +58,7 @@ const app = Vue.createApp({
                 alert("Sort is in progress");
                 return;
             }
+            // Notify children component
             this.sortTrigger++;
         },
         shuffle() {
@@ -65,6 +66,7 @@ const app = Vue.createApp({
                 alert("Sort is in progress");
                 return;
             }
+            // Notify children component
             this.shuffleTrigger++;
         },
         sortToggleState() {
@@ -134,7 +136,7 @@ app.component('sortui', {
                 await this.sleep();
             }
             // Enable buttons
-            this.$emit("sortToggleState");
+            this.$emit("sorttoggle");
         },
         sleep() {
             return new Promise((resolve) => setTimeout(resolve, 50));
